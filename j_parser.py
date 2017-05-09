@@ -52,9 +52,15 @@ def null_parser(string):
         str_list.append(string[4:])
         return str_list
 
+def comma_parser(string):
+    str_list = []
+    if string[0] == ',':
+        str_list.append(string[0])
+        str_list.append(string[1:])
+        return str_list
 
 def jparser(string):
-    val = null_parser(string)
+    val = comma_parser(string)
     if val:
         return val
     else:
