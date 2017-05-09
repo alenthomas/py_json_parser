@@ -14,7 +14,10 @@ def string_parser(string):
 
 def jparser(string):
     val = string_parser(string)
-    return val
+    if val:
+        return val
+    else:
+        raise SyntaxError
 
 def interface():
     json_string = input("Enter JSON: ").replace(' ', '').strip()
