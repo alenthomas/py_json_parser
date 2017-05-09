@@ -11,9 +11,15 @@ def string_parser(string):
         str_list.append(s)
         str_list.append(string[i+1:])
         return str_list
+def colon_parser(string):
+    str_list = []
+    if string[0] == ':':
+        str_list.append(string[0])
+        str_list.append(string[1:])
+        return str_list
 
 def jparser(string):
-    val = string_parser(string)
+    val = colon_parser(string)
     if val:
         return val
     else:
