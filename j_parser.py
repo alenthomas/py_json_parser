@@ -1,7 +1,20 @@
 #!/bin/python3
 
+def string_parser(string):
+    str_list = []
+    if string[0] == '"':
+        i = 1
+        s = ''
+        while string[i] is not '"':
+            s = s + string[i]
+            i = i + 1
+        str_list.append(s)
+        str_list.append(string[i+1:])
+        return str_list
+
 def jparser(string):
-    pass
+    val = string_parser(string)
+    return val
 
 def interface():
     json_string = input("Enter JSON: ").replace(' ', '').strip()
