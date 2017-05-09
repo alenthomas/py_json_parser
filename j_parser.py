@@ -45,8 +45,16 @@ def boolean_parser(string):
         str_list.append(string[5:])
         return str_list
 
+def null_parser(string):
+    str_list = []
+    if string[0:4] == "null":
+        str_list.append(string[0:4])
+        str_list.append(string[4:])
+        return str_list
+
+
 def jparser(string):
-    val = boolean_parser(string)
+    val = null_parser(string)
     if val:
         return val
     else:
