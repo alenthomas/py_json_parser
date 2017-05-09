@@ -34,8 +34,19 @@ def number_parser(string):
         str_list.append(string[i+1:])
         return str_list
 
+def boolean_parser(string):
+    str_list = []
+    if string[0:4] == "true":
+        str_list.append(string[0:4])
+        str_list.append(string[4:])
+        return str_list
+    elif string[0:5] == "false":
+        str_list.append(string[0:5])
+        str_list.append(string[5:])
+        return str_list
+
 def jparser(string):
-    val = number_parser(string)
+    val = boolean_parser(string)
     if val:
         return val
     else:
