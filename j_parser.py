@@ -59,6 +59,19 @@ def comma_parser(string):
         str_list.append(string[1:])
         return str_list
 
+def object_parser(string):
+    str_list = []
+    if string[0] == '{':
+        str_list.append(string[0])
+        if string[1] is not '"':
+            raise SyntaxError
+        str_list.append(string[1:])
+        return str_list
+    elif string[0] == "}":
+        str_list.append(string[0])
+        str_list.append(string[1:])
+        return str_list
+
 def jparser(string):
     if not string:
         return final_val
