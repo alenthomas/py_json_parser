@@ -60,13 +60,62 @@ def comma_parser(string):
         return str_list
 
 def jparser(string):
-    val = comma_parser(string)
-    if val:
-        return val
+    if not string:
+        return final_val
+    elif string[0] == '"':
+        result=string_parser(string)
+        if result:
+            #print(result)
+            final_val.append(result[0])
+            return jparser(result[1])
+        else:
+            raise SyntaxError
+    elif string[0] == ":":
+        result = colon_parser(string)
+        if result:
+            #print(result)
+            final_val.append(result[0])
+            return jparser(result[1])
+        else:
+            raise SyntaxError
+    elif string[0:4] == "true":
+        result = boolean_parser(string)
+        if result:
+            #print(result)
+            final_val.append(result[0])
+            return jparser(result[1])
+        else:
+            raise SyntaxError
+    elif string[0:5] == "false":
+        result = boolean_parser(string)
+        if result:
+            #print(result)
+            final_val.append(result[0])
+            return jparser(result[1])
+        else:
+            raise SyntaxError
+    elif string[0:4] == "null":
+        result = null_parser(string)
+        if result:
+            #print(result)
+            final_val.append(result[0])
+            return jparser(result[1])
+        else:
+            raise SyntaxError
+    elif string[0] == ',':
+        result = comma_parser(string)
+        if result:
+            #print(result)
+            final_val.append(result[0])
+            return jparser(result[1])
+        else:
+            raise SyntaxError
     else:
         raise SyntaxError
 
 def interface():
+    global final_val
+    final_val = []
     json_string = input("Enter JSON: ").replace(' ', '').strip()
     partial = jparser(json_string)
     print(partial)
