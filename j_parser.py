@@ -75,6 +75,14 @@ def object_parser(string):
 def jparser(string):
     if not string:
         return final_val
+    elif string[0] == "{" or string[0] == "}":
+        result = object_parser(string)
+        if result:
+            #print(result)
+            final_val.append(result[0])
+            return jparser(result[1])
+        else:
+            raise SyntaxError
     elif string[0] == '"':
         result=string_parser(string)
         if result:
