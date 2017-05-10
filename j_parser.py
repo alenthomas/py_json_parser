@@ -72,10 +72,22 @@ def object_parser(string):
         str_list.append(string[0])
         str_list.append(string[1:])
         return str_list
+def array_parser(string):
+    str_list = []
+    #if string[0] == '[':
+    str_list.append(string[0])
+    str_list.append(string[1:])
+    return str_list
 
 def jparser(string):
     if not string:
         return final_val
+    elif string[0] == '[' or string[0] == "]":
+        result = array_parser(string)
+        if result:
+            #print(result)
+            final_val.append(result[0])
+            return jparser(result[1])
     elif string[0] == "{" or string[0] == "}":
         result = object_parser(string)
         if result:
