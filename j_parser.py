@@ -1,5 +1,7 @@
 #!/bin/python3
 import re
+exp = r'^[0-9]+'
+pattern = re.compile(exp)
 
 def string_parser(string):
     str_list = []
@@ -21,17 +23,16 @@ def colon_parser(string):
         return str_list
 
 def number_parser(string):
-    exp = r'^[0-9]+'
-    pattern = re.compile(exp)
     str_list = []
     if pattern.match(string[0]):
         s = ''
         i = 0
-        while string[i] is not (',' or '}' or ']'):
+        #while string[i] is not (',' or '}' or ']'):
+        while pattern.match(string[i]):
             s = s + string[i]
             i = i+1
         str_list.append(s)
-        str_list.append(string[i+1:])
+        str_list.append(string[i:])
         return str_list
 
 def boolean_parser(string):
@@ -91,6 +92,14 @@ def jparser(string):
             return jparser(result[1])
         else:
             raise SyntaxError
+    elif pattern.match(string[0]):
+        result = number_parser(string)
+        if result:
+            #print(result)
+            final_val.append(result[0])
+            return jparser(result[1])
+        else:
+            raise SyntaxError
     elif string[0] == ":":
         result = colon_parser(string)
         if result:
@@ -140,5 +149,6 @@ def interface():
     json_string = input("Enter JSON: ").replace(' ', '').strip()
     partial = jparser(json_string)
     print(partial)
+
 
 interface()
