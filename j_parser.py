@@ -72,6 +72,7 @@ def object_parser(string):
         str_list.append(string[0])
         str_list.append(string[1:])
         return str_list
+
 def array_parser(string):
     str_list = []
     #if string[0] == '[':
@@ -80,80 +81,31 @@ def array_parser(string):
     return str_list
 
 def jparser(string):
-    if not string:
-        return final_val
-    elif string[0] == '[' or string[0] == "]":
-        result = array_parser(string)
-        if result:
-            #print(result)
-            final_val.append(result[0])
-            return jparser(result[1])
-    elif string[0] == "{" or string[0] == "}":
-        result = object_parser(string)
-        if result:
-            #print(result)
-            final_val.append(result[0])
-            return jparser(result[1])
-        else:
-            raise SyntaxError
-    elif string[0] == '"':
-        result=string_parser(string)
-        if result:
-            #print(result)
-            final_val.append(result[0])
-            return jparser(result[1])
-        else:
-            raise SyntaxError
-    elif pattern.match(string[0]):
-        result = number_parser(string)
-        if result:
-            #print(result)
-            final_val.append(result[0])
-            return jparser(result[1])
-        else:
-            raise SyntaxError
-    elif string[0] == ":":
-        result = colon_parser(string)
-        if result:
-            #print(result)
-            final_val.append(result[0])
-            return jparser(result[1])
-        else:
-            raise SyntaxError
-    elif string[0:4] == "true":
-        result = boolean_parser(string)
-        if result:
-            #print(result)
-            final_val.append(result[0])
-            return jparser(result[1])
-        else:
-            raise SyntaxError
-    elif string[0:5] == "false":
-        result = boolean_parser(string)
-        if result:
-            #print(result)
-            final_val.append(result[0])
-            return jparser(result[1])
-        else:
-            raise SyntaxError
-    elif string[0:4] == "null":
-        result = null_parser(string)
-        if result:
-            #print(result)
-            final_val.append(result[0])
-            return jparser(result[1])
-        else:
-            raise SyntaxError
-    elif string[0] == ',':
-        result = comma_parser(string)
-        if result:
-            #print(result)
-            final_val.append(result[0])
-            return jparser(result[1])
-        else:
-            raise SyntaxError
-    else:
-        raise SyntaxError
+    print(string)
+    result = string_parser(string)
+    if result:
+        print("string", result)
+        return result
+    result = number_parser(string)
+    if result:
+        print("number", result)
+        return result
+    result = boolean_parser(string)
+    if result:
+        print("boolean", result)
+        return result
+    result = null_parser(string)
+    if result:
+        print("null", result)
+        return result
+    result = array_parser(string)
+    if result:
+        print("array", result)
+        return result
+    result = object_parser(string)
+    if result:
+        print("object", result)
+        return result
 
 def clean(data):
     data = data.replace('\n', '')
