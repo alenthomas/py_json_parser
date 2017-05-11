@@ -108,30 +108,30 @@ def array_parser(string):
             return [parsed_array, string[1:]]
 
 def jparser(string):
-    print(string)
+    #print(string)
     result = string_parser(string)
     if result:
-        print("string", result)
+        #print("string", result)
         return result
     result = number_parser(string)
     if result:
-        print("number", result)
+        #print("number", result)
         return result
     result = boolean_parser(string)
     if result:
-        print("boolean", result)
+        #print("boolean", result)
         return result
     result = null_parser(string)
     if result:
-        print("null", result)
+        #print("null", result)
         return result
     result = array_parser(string)
     if result:
-        print("array", result)
+        #print("array", result)
         return result
     result = object_parser(string)
     if result:
-        print("object", result)
+        #print("object", result)
         return result
 
 def clean(data):
@@ -152,6 +152,6 @@ def interface():
     elif data[0] == "[":
         parsed_data = array_parser(data)
 
-    print(parsed_data)
+    print(parsed_data[0])
 
 interface()
