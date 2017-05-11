@@ -1,5 +1,6 @@
 #!/bin/python3
 import re
+from pprint import pprint
 
 exp = r'^[0-9]+'
 pattern = re.compile(exp)
@@ -145,6 +146,7 @@ def interface():
 
     with open("data.json", "r") as f:
         data = f.read()
+
     data = clean(data)
 
     if data[0] == "{":
@@ -152,6 +154,6 @@ def interface():
     elif data[0] == "[":
         parsed_data = array_parser(data)
 
-    print(parsed_data[0])
+    pprint(parsed_data[0], indent=2)
 
 interface()
