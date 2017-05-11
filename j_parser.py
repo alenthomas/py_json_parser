@@ -1,5 +1,6 @@
 #!/bin/python3
 import re
+
 exp = r'^[0-9]+'
 pattern = re.compile(exp)
 
@@ -65,7 +66,7 @@ def object_parser(string):
     if string[0] is not '{':
         return None
     string = string[1:]
-    while len(string) > 0:
+    while string[0] is not '}':
         result = string_parser(string)
         if result is None:
             raise SyntaxError
@@ -86,6 +87,7 @@ def object_parser(string):
             raise SyntaxError
         if string[0] is '}':
             return [parsed_dict, string[1:]]
+    return [parsed_dict, string[1:]]
 
 def array_parser(string):
     parsed_array = []
