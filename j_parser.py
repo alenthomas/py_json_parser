@@ -113,13 +113,17 @@ def clean(data):
     return data
 
 def interface():
-    global final_val
-    final_val = []
+    parsed_data = None
+
     with open("data.json", "r") as f:
         data = f.read()
     data = clean(data)
-    #json_string = input("Enter JSON: ").replace(' ', '').strip()
-    partial = jparser(data)
-    print(partial)
+
+    if data[0] == "{":
+        parsed_data = object_parser(data)
+    elif data[0] == "]":
+        parsed_data = array_parser(data)
+
+    print(parsed_data)
 
 interface()
