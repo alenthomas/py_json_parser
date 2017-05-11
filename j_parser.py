@@ -61,17 +61,31 @@ def comma_parser(string):
         return str_list
 
 def object_parser(string):
-    str_list = []
-    if string[0] == '{':
-        str_list.append(string[0])
-        if string[1] is not '"':
+    parsed_dict = {}
+    if string[0] is not '{':
+        return None
+    string = string[1:]
+    while len(string) > 0:
+        result = string_parser(string)
+        if result is None:
             raise SyntaxError
-        str_list.append(string[1:])
-        return str_list
-    elif string[0] == "}":
-        str_list.append(string[0])
-        str_list.append(string[1:])
-        return str_list
+        key = result[0]
+        result = colon_parser(result[1])
+        if result is None:
+            raise SyntaxError
+        string = result[1]
+        result = jparser(string)
+        if result is None:
+            raise SyntaxError
+        parsed_dict[key]=result[0]
+        string = result[1]
+        result = comma_parser(string)
+        if result is not None:
+            string = result[1]
+        elif string[0] is not '}':
+            raise SyntaxError
+        if string[0] is '}':
+            return [parsed_dict, string[1:]]
 
 def array_parser(string):
     parsed_array = []
