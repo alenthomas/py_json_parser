@@ -74,11 +74,22 @@ def object_parser(string):
         return str_list
 
 def array_parser(string):
-    str_list = []
-    #if string[0] == '[':
-    str_list.append(string[0])
-    str_list.append(string[1:])
-    return str_list
+    parsed_array = []
+    if string[0] is not '[':
+        return None
+    string = string[1:]
+    while len(string) > 0:
+        result = jparser(string)
+        if result is not None:
+            parsed_array.append(result[0])
+            string = result[1]
+            result = comma_parser(string)
+            if result is not None:
+                string = result[1]
+            elif string[0] is not ']':
+                raise SyntaxError
+        if string[0] == ']':
+            return [parsed_array, string[1:]]
 
 def jparser(string):
     print(string)
@@ -121,7 +132,7 @@ def interface():
 
     if data[0] == "{":
         parsed_data = object_parser(data)
-    elif data[0] == "]":
+    elif data[0] == "[":
         parsed_data = array_parser(data)
 
     print(parsed_data)
