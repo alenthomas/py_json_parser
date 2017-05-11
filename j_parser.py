@@ -8,7 +8,7 @@ def string_parser(string):
     if string[0] == '"':
         i = 1
         s = ''
-        while string[i] is not '"':
+        while string[i] is not '"': # str[i:].find('"')
             s = s + string[i]
             i = i + 1
         str_list.append(s)
@@ -155,12 +155,19 @@ def jparser(string):
     else:
         raise SyntaxError
 
+def clean(data):
+    data = data.replace('\n', '')
+    data = data.replace(' ', '')
+    return data
+
 def interface():
     global final_val
     final_val = []
-    json_string = input("Enter JSON: ").replace(' ', '').strip()
-    partial = jparser(json_string)
+    with open("data.json", "r") as f:
+        data = f.read()
+    data = clean(data)
+    #json_string = input("Enter JSON: ").replace(' ', '').strip()
+    partial = jparser(data)
     print(partial)
-
 
 interface()
