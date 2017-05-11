@@ -1,0 +1,25 @@
+[{
+  "id": "0001",
+  "type": "donut",
+  "name": "cake",
+  "ppu": 123,
+  "batters": {
+    "batter": [{
+      "id": "1001",
+      "type": "regular"
+    }, {
+      "id": 1002,
+      "type": "chocolate"
+    }]
+  },
+  "toppings": [{
+    "id": 5001,
+    "type": "None"
+  }, {
+    "id": "5002",
+    "type": "Glazed"
+  }]
+}, {
+  "active": true,
+  "status": null
+}]
