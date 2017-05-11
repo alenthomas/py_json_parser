@@ -136,6 +136,7 @@ def jparser(string):
 
 def clean(data):
     data = data.replace('\n', '')
+    data = data.replace('\t', '')
     data = data.replace(' ', '')
     return data
 
