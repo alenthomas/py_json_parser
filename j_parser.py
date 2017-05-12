@@ -2,9 +2,6 @@
 import re
 from pprint import pprint
 
-exp = r'^[0-9]+'
-pattern = re.compile(exp)
-
 def string_parser(string):
     str_list = []
     if string[0] == '"':
@@ -26,16 +23,20 @@ def colon_parser(string):
 
 def number_parser(string):
     str_list = []
-    if pattern.match(string[0]):
-        s = ''
-        i = 0
-        #while string[i] is not (',' or '}' or ']'):
-        while pattern.match(string[i]):
-            s = s + string[i]
-            i = i+1
-        str_list.append(int(s))
-        str_list.append(string[i:])
-        return str_list
+    length = None
+    if string:
+        regex = re.findall('^(-?(?:0|[1-9]\d*)(?:\.\d+)?(?:[eE][+-]?\d+)?)', string)
+        if regex:
+            length = len(regex[0])
+            try:
+                str_list.append(int(regex[0]))
+            except ValueError:
+                try:
+                    str_list.append(float(regex[0]))
+                except ValueError:
+                    return None
+            str_list.append(string[length:])
+            return str_list
 
 def boolean_parser(string):
     str_list = []
@@ -109,30 +110,23 @@ def array_parser(string):
             return [parsed_array, string[1:]]
 
 def jparser(string):
-    #print(string)
     result = string_parser(string)
     if result:
-        #print("string", result)
         return result
     result = number_parser(string)
     if result:
-        #print("number", result)
         return result
     result = boolean_parser(string)
     if result:
-        #print("boolean", result)
         return result
     result = null_parser(string)
     if result:
-        #print("null", result)
         return result
     result = array_parser(string)
     if result:
-        #print("array", result)
         return result
     result = object_parser(string)
     if result:
-        #print("object", result)
         return result
 
 def clean(data):
