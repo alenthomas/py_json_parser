@@ -40,11 +40,11 @@ def number_parser(string):
 def boolean_parser(string):
     str_list = []
     if string[0:4] == "true":
-        str_list.append(string[0:4])
+        str_list.append(True)
         str_list.append(string[4:])
         return str_list
     elif string[0:5] == "false":
-        str_list.append(string[0:5])
+        str_list.append(False)
         str_list.append(string[5:])
         return str_list
 
