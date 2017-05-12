@@ -33,7 +33,7 @@ def number_parser(string):
         while pattern.match(string[i]):
             s = s + string[i]
             i = i+1
-        str_list.append(s)
+        str_list.append(int(s))
         str_list.append(string[i:])
         return str_list
 
