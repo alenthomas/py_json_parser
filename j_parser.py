@@ -51,7 +51,7 @@ def boolean_parser(string):
 def null_parser(string):
     str_list = []
     if string[0:4] == "null":
-        str_list.append(string[0:4])
+        str_list.append(None)
         str_list.append(string[4:])
         return str_list
 
