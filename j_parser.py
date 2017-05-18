@@ -110,24 +110,13 @@ def array_parser(string):
             return [parsed_array, string[1:]]
 
 def jparser(string):
-    result = string_parser(string)
-    if result:
-        return result
-    result = number_parser(string)
-    if result:
-        return result
-    result = boolean_parser(string)
-    if result:
-        return result
-    result = null_parser(string)
-    if result:
-        return result
-    result = array_parser(string)
-    if result:
-        return result
-    result = object_parser(string)
-    if result:
-        return result
+    parsers = (string_parser, number_parser, boolean_parser,
+               null_parser, array_parser, object_parser)
+
+    for parser in parsers:
+        result = parser(string)
+        if result:
+            return result
 
 def clean(data):
     data = data.replace('\n', '')
@@ -140,7 +129,7 @@ def interface():
 
     with open("data.json", "r") as f:
         data = f.read()
-
+    #data = input()
     data = clean(data)
 
     if data[0] == "{":
