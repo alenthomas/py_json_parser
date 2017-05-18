@@ -3,72 +3,52 @@ import re
 from pprint import pprint
 
 def string_parser(string):
-    str_list = []
     if string[0] == '"':
         i = 1
-        s = ''
+        s = ""
         while string[i] is not '"': # str[i:].find('"')
             s = s + string[i]
             i = i + 1
-        str_list.append(s)
-        str_list.append(string[i+1:])
-        return str_list
+        return [s, string[i+1:]]
 
 def colon_parser(string):
-    str_list = []
-    if string[0] == ':':
-        str_list.append(string[0])
-        str_list.append(string[1:])
-        return str_list
+    if string[0] == ":":
+        return [":", string[1:]]
 
 def number_parser(string):
-    str_list = []
     length = None
     if string:
-        regex = re.findall('^(-?(?:0|[1-9]\d*)(?:\.\d+)?(?:[eE][+-]?\d+)?)', string)
+        regex = re.findall("^(-?(?:0|[1-9]\d*)(?:\.\d+)?(?:[eE][+-]?\d+)?)", string)
         if regex:
             length = len(regex[0])
             try:
-                str_list.append(int(regex[0]))
+                return [int(regex[0]), string[length:]]
             except ValueError:
                 try:
-                    str_list.append(float(regex[0]))
+                    return [float(regex[0]), string[length:]]
                 except ValueError:
                     return None
-            str_list.append(string[length:])
-            return str_list
 
 def boolean_parser(string):
-    str_list = []
     if string[0:4] == "true":
-        str_list.append(True)
-        str_list.append(string[4:])
-        return str_list
+        return [True, string[4:]]
     elif string[0:5] == "false":
-        str_list.append(False)
-        str_list.append(string[5:])
-        return str_list
+        return [False, string[5:]]
 
 def null_parser(string):
-    str_list = []
     if string[0:4] == "null":
-        str_list.append(None)
-        str_list.append(string[4:])
-        return str_list
+        return [None, string[4:]]
 
 def comma_parser(string):
-    str_list = []
-    if string[0] == ',':
-        str_list.append(string[0])
-        str_list.append(string[1:])
-        return str_list
+    if string[0] == ",":
+        return [",", string[1:]]
 
 def object_parser(string):
     parsed_dict = {}
-    if string[0] is not '{':
+    if string[0] is not "{":
         return None
     string = string[1:]
-    while string[0] is not '}':
+    while string[0] is not "}":
         result = string_parser(string)
         if result is None:
             raise SyntaxError
@@ -85,15 +65,15 @@ def object_parser(string):
         result = comma_parser(string)
         if result is not None:
             string = result[1]
-        elif string[0] is not '}':
+        elif string[0] is not "}":
             raise SyntaxError
-        if string[0] is '}':
+        if string[0] is "}":
             return [parsed_dict, string[1:]]
     return [parsed_dict, string[1:]]
 
 def array_parser(string):
     parsed_array = []
-    if string[0] is not '[':
+    if string[0] is not "[":
         return None
     string = string[1:]
     while len(string) > 0:
@@ -104,9 +84,9 @@ def array_parser(string):
             result = comma_parser(string)
             if result is not None:
                 string = result[1]
-            elif string[0] is not ']':
+            elif string[0] is not "]":
                 raise SyntaxError
-        if string[0] == ']':
+        if string[0] == "]":
             return [parsed_array, string[1:]]
 
 def jparser(string):
@@ -119,9 +99,9 @@ def jparser(string):
             return result
 
 def clean(data):
-    data = data.replace('\n', '')
-    data = data.replace('\t', '')
-    data = data.replace(' ', '')
+    data = data.replace("\n", "")
+    data = data.replace("\t", "")
+    data = data.replace(" ", "")
     return data
 
 def interface():
