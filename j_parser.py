@@ -15,7 +15,7 @@ def colon_parser(string):
 def number_parser(string):
     length = None
     if string:
-        regex = re.findall("^(-?(?:0|[1-9]\d*)(?:\.\d+)?(?:[eE][+-]?\d+)?)", string)
+        regex = re.match("^(-?(?:0|[1-9]\d*)(?:\.\d+)?(?:[eE][+-]?\d+)?)", string)
         if regex:
             length = len(regex[0])
             try:
@@ -116,4 +116,5 @@ def interface():
 
     pprint(parsed_data[0], indent=2)
 
-interface()
+if __name__ == "__main__":
+    interface()
