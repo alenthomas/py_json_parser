@@ -109,11 +109,7 @@ def interface():
     #data = input()
     data = clean(data)
 
-    if data[0] == "{":
-        parsed_data = object_parser(data)
-    elif data[0] == "[":
-        parsed_data = array_parser(data)
-
+    parsed_data = jparser(data)
     pprint(parsed_data[0], indent=2)
 
 if __name__ == "__main__":
