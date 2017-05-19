@@ -4,12 +4,9 @@ from pprint import pprint
 
 def string_parser(string):
     if string[0] == '"':
-        i = 1
-        s = ""
-        while string[i] is not '"': # str[i:].find('"')
-            s = s + string[i]
-            i = i + 1
-        return [s, string[i+1:]]
+        string = string[1:]
+        index = string.find('"')
+        return [string[:index], string[index+1:]]
 
 def colon_parser(string):
     if string[0] == ":":
