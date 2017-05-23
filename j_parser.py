@@ -2,96 +2,96 @@
 import re
 from pprint import pprint
 
-def string_parser(string):
-    if string[0] == '"':
-        string = string[1:]
-        index = string.find('"')
-        return [string[:index], string[index+1:]]
+def string_parser(data):
+    if data[0] == '"':
+        data = data[1:]
+        index = data.find('"')
+        return [data[:index], data[index+1:]]
 
-def colon_parser(string):
-    if string[0] == ":":
-        return [":", string[1:]]
+def colon_parser(data):
+    if data[0] == ":":
+        return [":", data[1:]]
 
-def number_parser(string):
+def number_parser(data):
     length = None
-    if string:
-        regex = re.match("^(-?(?:0|[1-9]\d*)(?:\.\d+)?(?:[eE][+-]?\d+)?)", string)
-        if regex:
-            length = len(regex[0])
+    if data:
+        match = re.match("^(-?(?:0|[1-9]\d*)(?:\.\d+)?(?:[eE][+-]?\d+)?)", data)
+        if match:
+            length = len(match[0])
             try:
-                return [int(regex[0]), string[length:]]
+                return [int(match[0]), data[length:]]
             except ValueError:
                 try:
-                    return [float(regex[0]), string[length:]]
+                    return [float(match[0]), data[length:]]
                 except ValueError:
                     return None
 
-def boolean_parser(string):
-    if string[0:4] == "true":
-        return [True, string[4:]]
-    elif string[0:5] == "false":
-        return [False, string[5:]]
+def boolean_parser(data):
+    if data[0:4] == "true":
+        return [True, data[4:]]
+    elif data[0:5] == "false":
+        return [False, data[5:]]
 
-def null_parser(string):
-    if string[0:4] == "null":
-        return [None, string[4:]]
+def null_parser(data):
+    if data[0:4] == "null":
+        return [None, data[4:]]
 
-def comma_parser(string):
-    if string[0] == ",":
-        return [",", string[1:]]
+def comma_parser(data):
+    if data[0] == ",":
+        return [",", data[1:]]
 
-def object_parser(string):
+def object_parser(data):
     parsed_dict = {}
-    if string[0] is not "{":
+    if data[0] is not "{":
         return None
-    string = string[1:]
-    while string[0] is not "}":
-        result = string_parser(string)
+    data = data[1:]
+    while data[0] is not "}":
+        result = string_parser(data)
         if result is None:
             raise SyntaxError
         key = result[0]
         result = colon_parser(result[1])
         if result is None:
             raise SyntaxError
-        string = result[1]
-        result = jparser(string)
+        data = result[1]
+        result = all_parser(data)
         if result is None:
             raise SyntaxError
         parsed_dict[key]=result[0]
-        string = result[1]
-        result = comma_parser(string)
+        data = result[1]
+        result = comma_parser(data)
         if result is not None:
-            string = result[1]
-        elif string[0] is not "}":
+            data = result[1]
+        elif data[0] is not "}":
             raise SyntaxError
-        if string[0] is "}":
-            return [parsed_dict, string[1:]]
-    return [parsed_dict, string[1:]]
+        if data[0] is "}":
+            return [parsed_dict, data[1:]]
+    return [parsed_dict, data[1:]]
 
-def array_parser(string):
+def array_parser(data):
     parsed_array = []
-    if string[0] is not "[":
+    if data[0] is not "[":
         return None
-    string = string[1:]
-    while len(string) > 0:
-        result = jparser(string)
+    data = data[1:]
+    while len(data) > 0:
+        result = all_parser(data)
         if result is not None:
             parsed_array.append(result[0])
-            string = result[1]
-            result = comma_parser(string)
+            data = result[1]
+            result = comma_parser(data)
             if result is not None:
-                string = result[1]
-            elif string[0] is not "]":
+                data = result[1]
+            elif data[0] is not "]":
                 raise SyntaxError
-        if string[0] == "]":
-            return [parsed_array, string[1:]]
+        if data[0] == "]":
+            return [parsed_array, data[1:]]
 
-def jparser(string):
+def all_parser(data):
     parsers = (string_parser, number_parser, boolean_parser,
                null_parser, array_parser, object_parser)
 
     for parser in parsers:
-        result = parser(string)
+        result = parser(data)
         if result:
             return result
 
@@ -109,7 +109,7 @@ def interface():
     #data = input()
     data = clean(data)
 
-    parsed_data = jparser(data)
+    parsed_data = all_parser(data)
     pprint(parsed_data[0], indent=2)
 
 if __name__ == "__main__":
