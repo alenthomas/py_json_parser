@@ -10,6 +10,8 @@ def string_parser(data):
     if data[0] == '"':
         data = data[1:]
         index = data.find('"')
+        while data[index-1] == '\\':
+            index += data[index+1:].find('"')+1
         return [data[:index], data[index+1:].lstrip(" \t\n")]
 
 def colon_parser(data):
